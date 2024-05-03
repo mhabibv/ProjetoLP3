@@ -1,3 +1,5 @@
+#Participantes: Maria Valentina e Juan Pablo
+
 class Categorias:
 
     def __init__(self, codigo, descricao):
