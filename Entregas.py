@@ -160,7 +160,6 @@ class Entregador:
             self.coordenada_atual = coordenada
             self.caminho.append(coordenada)
             self.distancia_percorrida += 1
-
     
 class Carro(Entregador):
 
@@ -181,7 +180,6 @@ class Carro(Entregador):
         print(f"Consumo Total: {distancia_percorrida * Carro.consumo_medio}")
         return distancia_percorrida
     
-
 class Drone(Entregador):
     
     def __init__(self, nome):
@@ -318,28 +316,76 @@ class Drone(Entregador):
             self.caminho.append(coordenada)
             self.distancia_percorrida += 1
 
+""""
+def menu():
+
+    opc = 1
+
+    while(opc != 0):
+        print("====Menu====")
+        print("1- Cadastrar Entrega")
+        print("0- Sair")
+        print("")
+        opc = int(input("Digite uma opção: "))
     
 
+        if opc == 1:
+            nome = input("Digite o nome do entregador: ")
+            while(opc != 0):
+                print("===Opcoes===")
+                print("1- A Pé")
+                print("2- Carro")
+                print("3- Drone")
+                print("0- Voltar")
+                print("")
+                opc = int(input("Digite uma opção: "))
+                if opc == 1:
+                    menu_entregador(nome)
+
+                elif opc == 2:
+                    entregador = Carro(nome)
+
+                elif opc == 3:
+                    entregador = Drone(nome)
+
+                elif opc != 0:
+                    print("Opção Inválida, digite novamente!")
+
+        elif opc != 0:
+            print("Opção Inválida, digite novamente!")
+        
+
+def menu_entregador(nome):
+
+    entregador = Entregador(nome)
+
+    opc = 1
+
+    while(opc != 0):
+        print("====Menu====")
+        print("1- Ponto de Partida")
+        print("2- Terminar Entrega")
+        print("3- Mover Norte")
+        print("4- Mover Norte")
+        print("5- Mover Norte")
+        print("6- Mover Norte")
+        print("0- Sair")
+        print("")
+        opc = int(input("Digite uma opção: "))
+
+        if opc == 1:
+            coordenadas = input("Digite o x e y: ")
+            coordenadas = coordenadas.split()
+            x = coordenadas[0]
+            y = coordenadas[1]
+            entregador.ponto_de_partida(x,y)
+        if opc == 2:
+            entregador.termina_entrega()
+        if opc == 3:
+            entregador.move_norte()
+""" 
     
-    
 
-    
-
-juan = Drone("Juan")
-
-juan.ponto_de_partida(0,0)
-"""""
-juan.move_sul()
-juan.move_sul()
-juan.move_leste()
-juan.move_leste()
-juan.move_norte()
-"""
-juan.move_direto(5,4)
-
-
-
-juan.termina_entrega()
         
 
     
