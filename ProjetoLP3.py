@@ -73,6 +73,7 @@ c = Categoria("Comida")
 Categorias.append(c)
 
 p = Produto("Biscoito", 7.50, c)
+c.set_descricao("Bebida")
 
 print(p)
 
