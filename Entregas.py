@@ -21,6 +21,8 @@ class Entregador:
              print(f"X precisa estar entre 0 e {Entregador.linha - 1}")
         elif y < 0 or y > Entregador.coluna-1:
              print(f"Y precisa estar entre 0 e {Entregador.coluna - 1}")
+        elif self.comecou is True:
+            print("A entrega já começou, termine a atual para iniciar uma nova entrega")
 
         else:
             coordenada = (x,y)
@@ -37,6 +39,7 @@ class Entregador:
             self.mostra_percurso()
             distancia_percorrida = self.distancia_percorrida
             self.distancia_percorrida = 0
+            self.caminho = []
             return distancia_percorrida
 
     def mostra_percurso(self):
@@ -195,57 +198,50 @@ class Drone(Entregador):
         elif y < 0 or y > Entregador.coluna-1:
              print(f"Y precisa estar entre 0 e {Entregador.coluna - 1}")
 
-        
-        x_atual = self.coordenada_atual[0]
-        y_atual = self.coordenada_atual[1]
-
-        while x != x_atual and y != y_atual:
-
-            if x < x_atual and y < y_atual:
-                self.move_diagonal_sup_esq()
-                print("Moveu cima esquerda")
-            elif x < x_atual and y > y_atual:
-                self.move_diagonal_sup_dir()
-                print("Moveu cima direita")
-
-            elif x > x_atual and y < y_atual:
-                self.move_diagonal_inf_esq()
-                print("Moveu baixo esquerda")
-
-            elif x > x_atual and y > y_atual:
-                self.move_diagonal_inf_dir()
-                print("Moveu baixo direita")
-
-
+        else:
             x_atual = self.coordenada_atual[0]
             y_atual = self.coordenada_atual[1]
-        
-        if not (y == y_atual and x == x_atual):
 
-            if x == x_atual:
+            while x != x_atual and y != y_atual:
 
-                while(y != y_atual):
-                    if y < y_atual:
-                        self.move_oeste()
-                        print("Moveu esquerda")
-                    else:
-                        self.move_leste()
-                        print("Moveu direita")
+                if x < x_atual and y < y_atual:
+                    self.move_diagonal_sup_esq()
 
-                    y_atual = self.coordenada_atual[1]
+                elif x < x_atual and y > y_atual:
+                    self.move_diagonal_sup_dir()
 
-            else:
-                while(x != x_atual):
-                    if x < x_atual:
-                        self.move_norte()
-                        print("Moveu cima")
+                elif x > x_atual and y < y_atual:
+                    self.move_diagonal_inf_esq()
 
-                    else:
-                        self.move_sul()
-                        print("Moveu baixo")
+                elif x > x_atual and y > y_atual:
+                    self.move_diagonal_inf_dir()
 
 
-                    x_atual = self.coordenada_atual[0]
+                x_atual = self.coordenada_atual[0]
+                y_atual = self.coordenada_atual[1]
+            
+            if not (y == y_atual and x == x_atual):
+
+                if x == x_atual:
+
+                    while(y != y_atual):
+                        if y < y_atual:
+                            self.move_oeste()
+                            
+                        else:
+                            self.move_leste()
+                            
+                        y_atual = self.coordenada_atual[1]
+
+                else:
+                    while(x != x_atual):
+                        if x < x_atual:
+                            self.move_norte()
+                            
+                        else:
+                            self.move_sul()
+
+                        x_atual = self.coordenada_atual[0]
 
                         
 
@@ -385,8 +381,10 @@ def menu_entregador(nome):
             entregador.move_norte()
 """ 
     
+j = Drone("Juan")
+print(j.nome)
+j.ponto_de_partida(0,0)
+j.move_direto(7,2)
 
-        
-
+j.termina_entrega()
     
-
