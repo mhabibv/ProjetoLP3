@@ -1,3 +1,4 @@
+
 class Entregador:
 
     linha = 8
@@ -14,15 +15,14 @@ class Entregador:
 
     def ponto_de_partida(self, x, y):
        
-
-        if (x < 0 or x > Entregador.linha-1) and (y < 0 or y > Entregador.coluna-1):
+        if self.comecou is True:
+            print("A entrega já começou, termine a atual para iniciar uma nova entrega")
+        elif (x < 0 or x > Entregador.linha-1) and (y < 0 or y > Entregador.coluna-1):
             print(f"X precisa estar entre 0 e {Entregador.linha - 1} e Y precisa estar entre 0 e {Entregador.coluna - 1}")
         elif x < 0 or x > Entregador.linha-1:
              print(f"X precisa estar entre 0 e {Entregador.linha - 1}")
         elif y < 0 or y > Entregador.coluna-1:
              print(f"Y precisa estar entre 0 e {Entregador.coluna - 1}")
-        elif self.comecou is True:
-            print("A entrega já começou, termine a atual para iniciar uma nova entrega")
 
         else:
             coordenada = (x,y)
@@ -56,14 +56,18 @@ class Entregador:
                 else:
                     print(" □ ", end="")
             print("") 
+        print(f"Coordenada atual: {self.coordenada_atual[0], self.coordenada_atual[1]}")
         print(f"Distância percorrida: {self.distancia_percorrida}")
             
 
     def move_norte_n_vezes(self, n):
         x = self.coordenada_atual[0]
 
+        if self.comecou is False:
+            print("É necessário primeiro definir o ponto de partida!")
+
         if x - n < 0:
-            print("Não é possivel realizar o movimento, o entregadora ultrapassará o limite do mapa")
+            print("Não é possivel realizar o movimento, o entregador ultrapassará o limite do mapa")
         else:
             while(n > 0):
                 self.move_norte()
@@ -87,6 +91,9 @@ class Entregador:
 
     def move_sul_n_vezes(self, n):
         x = self.coordenada_atual[0]
+
+        if self.comecou is False:
+            print("É necessário primeiro definir o ponto de partida!")
 
         if x + n > Entregador.linha - 1:
             print("Não é possivel realizar o movimento, o entregadora ultrapassará o limite do mapa")
@@ -114,6 +121,9 @@ class Entregador:
     def move_leste_n_vezes(self, n):
         y = self.coordenada_atual[1]
 
+        if self.comecou is False:
+            print("É necessário primeiro definir o ponto de partida!")
+
         if  y + n > Entregador.coluna - 1:
             print("Não é possivel realizar o movimento, o entregadora ultrapassará o limite do mapa")
         else:
@@ -140,6 +150,9 @@ class Entregador:
 
     def move_oeste_n_vezes(self, n):
         y = self.coordenada_atual[1]
+
+        if self.comecou is False:
+            print("É necessário primeiro definir o ponto de partida!")
 
         if  y - n < 0:
             print("Não é possivel realizar o movimento, o entregadora ultrapassará o limite do mapa")
@@ -312,79 +325,202 @@ class Drone(Entregador):
             self.caminho.append(coordenada)
             self.distancia_percorrida += 1
 
-""""
 def menu():
-
-    opc = 1
-
-    while(opc != 0):
-        print("====Menu====")
+    while True:
+        print("==== Menu ====")
         print("1- Cadastrar Entrega")
         print("0- Sair")
-        print("")
         opc = int(input("Digite uma opção: "))
-    
 
         if opc == 1:
             nome = input("Digite o nome do entregador: ")
-            while(opc != 0):
-                print("===Opcoes===")
-                print("1- A Pé")
-                print("2- Carro")
-                print("3- Drone")
-                print("0- Voltar")
-                print("")
-                opc = int(input("Digite uma opção: "))
-                if opc == 1:
-                    menu_entregador(nome)
+            print("Escolha o tipo de entregador: ")
+            print("1- A Pé")
+            print("2- Carro")
+            print("3- Drone")
+            print("0- Voltar")
+            tipo_entregador = int(input("Digite uma opção: "))
 
-                elif opc == 2:
-                    entregador = Carro(nome)
+            if tipo_entregador == 1:
+                entregador = Entregador(nome)
+                menu_entregador(entregador, "A Pé")
+            elif tipo_entregador == 2:
+                entregador = Carro(nome)
+                menu_entregador(entregador, "Carro")
+            elif tipo_entregador == 3:
+                entregador = Drone(nome)
+                menu_drone(entregador)
+            elif tipo_entregador == 0:
+                continue
+            else:
+                print("Opção inválida!")
+                continue
 
-                elif opc == 3:
-                    entregador = Drone(nome)
 
-                elif opc != 0:
-                    print("Opção Inválida, digite novamente!")
+        elif opc == 0:
+            print("Saindo do programa...")
+            break
+        else:
+            print("Opção inválida!")            
 
-        elif opc != 0:
-            print("Opção Inválida, digite novamente!")
         
 
-def menu_entregador(nome):
-
-    entregador = Entregador(nome)
-
-    opc = 1
-
-    while(opc != 0):
-        print("====Menu====")
-        print("1- Ponto de Partida")
-        print("2- Terminar Entrega")
-        print("3- Mover Norte")
-        print("4- Mover Norte")
-        print("5- Mover Norte")
-        print("6- Mover Norte")
-        print("0- Sair")
-        print("")
-        opc = int(input("Digite uma opção: "))
-
-        if opc == 1:
-            coordenadas = input("Digite o x e y: ")
-            coordenadas = coordenadas.split()
-            x = coordenadas[0]
-            y = coordenadas[1]
-            entregador.ponto_de_partida(x,y)
-        if opc == 2:
-            entregador.termina_entrega()
-        if opc == 3:
-            entregador.move_norte()
-""" 
+def menu_entregador(entregador, string):
     
-j = Drone("Juan")
-print(j.nome)
-j.ponto_de_partida(0,0)
-j.move_direto(7,2)
+    while True:
+        print(f"==== Menu {string} ====")
+        print("1- Definir Ponto de Partida")
+        print("2- Terminar Entrega")
+        print("3- Mover para o Norte")
+        print("4- Mover para o Sul")
+        print("5- Mover para o Leste")
+        print("6- Mover para o Oeste")
+        print("7- Mostra percurso")
+        print("8- Coordenada Atual")
+        print("0- Voltar ao Menu Principal")
 
-j.termina_entrega()
+        opc_entregador = int(input("Digite uma opção: "))
+
+        if opc_entregador == 1:
+            if entregador.comecou is True:
+                print("A entrega já começou, termine a atual para iniciar uma nova entrega")
+            else:
+                x = int(input("Digite a coordenada X: "))
+                y = int(input("Digite a coordenada Y: "))
+                entregador.ponto_de_partida(x, y)
+        elif opc_entregador == 2:
+            if entregador.comecou is False:
+                print("É necessário primeiro definir o ponto de partida!")
+                
+            else:
+                entregador.termina_entrega()
+        elif opc_entregador == 3:
+            if entregador.comecou is False:
+                print("É necessário primeiro definir o ponto de partida!")
+            else:
+                n = int(input("Digite quantas casas quer mover para o Norte: "))
+                entregador.move_norte_n_vezes(n)
+        elif opc_entregador == 4:
+            if entregador.comecou is False:
+                print("É necessário primeiro definir o ponto de partida!")
+            else:
+                n = int(input("Digite quantas casas quer mover para o Sul: "))
+                entregador.move_sul_n_vezes(n)
+        elif opc_entregador == 5:
+            if entregador.comecou is False:
+                print("É necessário primeiro definir o ponto de partida!")
+            else:    
+                n = int(input("Digite quantas casas quer mover para o Leste: "))
+                entregador.move_leste_n_vezes(n)
+        elif opc_entregador == 6:
+            if entregador.comecou is False:
+                print("É necessário primeiro definir o ponto de partida!")
+            else:
+                n = int(input("Digite quantas casas quer mover para o Oeste: "))
+                entregador.move_oeste_n_vezes(n)
+        elif opc_entregador == 7:
+            if entregador.comecou is False:
+                print("É necessário primeiro definir o ponto de partida!")
+            else:
+                entregador.mostra_percurso()
+        elif opc_entregador == 8:
+            if entregador.comecou is False:
+                print("É necessário primeiro definir o ponto de partida!")
+            else:
+                print(f"X: {entregador.coordenada_atual[0]}, Y: {entregador.coordenada_atual[1]}")
+
+
+        elif opc_entregador == 0:
+            input("Pressione Enter para continuar...")
+            break
+        else:
+            print("Opção inválida!")
+
+        input("Pressione Enter para continuar...")
+
+def menu_drone(entregador):
+    while True:
+        print(f"==== Menu Drone ====")
+        print("1- Definir Ponto de Partida")
+        print("2- Terminar Entrega")
+        print("3- Mover para o Norte")
+        print("4- Mover para o Sul")
+        print("5- Mover para o Leste")
+        print("6- Mover para o Oeste")
+        print("7- Mostra percurso")
+        print("8- Move Direto")
+        print("9- Coordenada Atual")
+        print("0- Voltar ao Menu Principal")
+
+        opc_entregador = int(input("Digite uma opção: "))
+
+        if opc_entregador == 1:
+            if entregador.comecou is True:
+                print("A entrega já começou, termine a atual para iniciar uma nova entrega")
+            else:
+                x = int(input("Digite a coordenada X: "))
+                y = int(input("Digite a coordenada Y: "))
+                entregador.ponto_de_partida(x, y)
+        elif opc_entregador == 2:
+            if entregador.comecou is False:
+                print("É necessário primeiro definir o ponto de partida!")
+                
+            else:
+                entregador.termina_entrega()
+        elif opc_entregador == 3:
+            if entregador.comecou is False:
+                print("É necessário primeiro definir o ponto de partida!")
+            else:
+                n = int(input("Digite quantas casas quer mover para o Norte: "))
+                entregador.move_norte_n_vezes(n)
+        elif opc_entregador == 4:
+            if entregador.comecou is False:
+                print("É necessário primeiro definir o ponto de partida!")
+            else:
+                n = int(input("Digite quantas casas quer mover para o Sul: "))
+                entregador.move_sul_n_vezes(n)
+        elif opc_entregador == 5:
+            if entregador.comecou is False:
+                print("É necessário primeiro definir o ponto de partida!")
+            else:    
+                n = int(input("Digite quantas casas quer mover para o Leste: "))
+                entregador.move_leste_n_vezes(n)
+        elif opc_entregador == 6:
+            if entregador.comecou is False:
+                print("É necessário primeiro definir o ponto de partida!")
+            else:
+                n = int(input("Digite quantas casas quer mover para o Oeste: "))
+                entregador.move_oeste_n_vezes(n)
+        elif opc_entregador == 7:
+            if entregador.comecou is False:
+                print("É necessário primeiro definir o ponto de partida!")
+            else:
+                entregador.mostra_percurso()
+        elif opc_entregador == 8:
+            if entregador.comecou is False:
+                print("É necessário primeiro definir o ponto de partida!")
+            else:
+                x = int(input("Digite a coordenada X: "))
+                y = int(input("Digite a coordenada Y: "))
+                entregador.move_direto(x,y)
+        elif opc_entregador == 9:
+            if entregador.comecou is False:
+                print("É necessário primeiro definir o ponto de partida!")
+            else:
+                print(f"X: {entregador.coordenada_atual[0]}, Y: {entregador.coordenada_atual[1]}")
+
+
+        elif opc_entregador == 0:
+            input("Pressione Enter para continuar...")
+            break
+        else:
+            print("Opção inválida!")
+
+        input("Pressione Enter para continuar...")
+
+
+menu()
+    
+
+
     
