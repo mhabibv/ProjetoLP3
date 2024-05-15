@@ -1,22 +1,25 @@
-
 class Entregador:
 
+    # Define o tamanho padrão do mapa
     linha = 8
     coluna = 8
 
+    # Inicializa um entregador com nome, coordenadas, etc.
     def __init__(self, nome):
 
         self.nome = nome
-        self.caminho = []
-        self.coordenada_atual = (0,0)
-        self.distancia_percorrida = 0
-        self.comecou = False
+        self.caminho = []  # Lista para armazenar o percurso
+        self.coordenada_atual = (0,0)  # Coordenada inicial
+        self.distancia_percorrida = 0  # Distância percorrida
+        self.comecou = False  # Indicador se a entrega já começou
 
-
+    # Define o ponto de partida para a entrega
     def ponto_de_partida(self, x, y):
-       
+        # Verifica se a entrega já começou
         if self.comecou is True:
             print("A entrega já começou, termine a atual para iniciar uma nova entrega")
+
+        # Verifica se as coordenadas estão dentro dos limites do mapa
         elif (x < 0 or x > Entregador.linha-1) and (y < 0 or y > Entregador.coluna-1):
             print(f"X precisa estar entre 0 e {Entregador.linha - 1} e Y precisa estar entre 0 e {Entregador.coluna - 1}")
         elif x < 0 or x > Entregador.linha-1:
@@ -30,18 +33,24 @@ class Entregador:
             self.caminho.append(coordenada)
             self.comecou = True
     
+        
+    # Encerra a entrega, mostrando o percurso e a distância percorrida
     def termina_entrega(self):
+
+        # Verifica se a entrega não começou
 
         if self.comecou is False:
             print("É necessário primeiro definir o ponto de partida!")
+        # Reinicia as variaveis e mostra o percurso 
         else:
-            self.comecou = False
+            self.comecou = False 
             self.mostra_percurso()
             distancia_percorrida = self.distancia_percorrida
             self.distancia_percorrida = 0
             self.caminho = []
             return distancia_percorrida
-
+        
+    # Mostra o percurso percorrido pelo entregador no mapa
     def mostra_percurso(self):
         for i in range(Entregador.linha):
             for j in range(Entregador.coluna):
@@ -59,7 +68,7 @@ class Entregador:
         print(f"Coordenada atual: {self.coordenada_atual[0], self.coordenada_atual[1]}")
         print(f"Distância percorrida: {self.distancia_percorrida}")
             
-
+    # Move o entregador para o norte n vezes
     def move_norte_n_vezes(self, n):
         x = self.coordenada_atual[0]
 
@@ -72,7 +81,8 @@ class Entregador:
             while(n > 0):
                 self.move_norte()
                 n = n -1
-        
+
+    # Move o entregador uma casa para o norte
     def move_norte(self):
         x = self.coordenada_atual[0]
         y = self.coordenada_atual[1]       
@@ -88,6 +98,8 @@ class Entregador:
             self.coordenada_atual = coordenada
             self.caminho.append(coordenada)
             self.distancia_percorrida += 1
+
+    # Outros métodos de movimento (sul, leste, oeste) seguem uma lógica semelhante
 
     def move_sul_n_vezes(self, n):
         x = self.coordenada_atual[0]
@@ -177,31 +189,38 @@ class Entregador:
             self.caminho.append(coordenada)
             self.distancia_percorrida += 1
     
+# A classe Carro herda de Entregador
 class Carro(Entregador):
 
-    consumo_medio = 5.50
+    consumo_medio = 5.50  # Define o consumo médio do carro
 
+    # Inicializa um carro chamando o construtor da classe Entregador
     def __init__(self, nome):
         super().__init__(nome) 
     
+    # Calcula o consumo total de combustível
     def consumo_total(self):
         if self.comecou is False:
             print("É necessário primeiro definir o ponto de partida!")
         else:
             return self.distancia_percorrida * Carro.consumo_medio
     
-
+    # Sobrescreve o método termina_entrega() para imprimir o consumo total antes de retornar a distância percorrida
     def termina_entrega(self):
         distancia_percorrida = super().termina_entrega()
         print(f"Consumo Total: {distancia_percorrida * Carro.consumo_medio}")
         return distancia_percorrida
-    
+
+# A classe Drone herda de Entregador
 class Drone(Entregador):
     
+    # Inicializa um drone chamando o construtor da classe Entregador
     def __init__(self, nome):
         super().__init__(nome)
     
+    # Inicializa um drone chamando o construtor da classe Entregador
     def move_direto(self, x, y):
+        # Verifica se a entrega já começou e se as coordenadas estão dentro dos limites do mapa
         if self.comecou is False:
             print("É necessário primeiro definir o ponto de partida!")
         elif (x < 0 or x > Entregador.linha-1) and (y < 0 or y > Entregador.coluna-1):
@@ -212,6 +231,7 @@ class Drone(Entregador):
              print(f"Y precisa estar entre 0 e {Entregador.coluna - 1}")
 
         else:
+            # Move o drone diagonalmente até alcançar a linha ou coluna desejada
             x_atual = self.coordenada_atual[0]
             y_atual = self.coordenada_atual[1]
 
@@ -232,7 +252,8 @@ class Drone(Entregador):
 
                 x_atual = self.coordenada_atual[0]
                 y_atual = self.coordenada_atual[1]
-            
+
+            # Após mover diagonalmente, move-se horizontalmente ou verticalmente conforme necessário
             if not (y == y_atual and x == x_atual):
 
                 if x == x_atual:
@@ -256,7 +277,8 @@ class Drone(Entregador):
 
                         x_atual = self.coordenada_atual[0]
 
-                        
+    # Outros métodos de movimento diagonal (sup_esq, sup_dir, inf_esq, inf_dir) foram criados para servir de auxiliar para o mover direto
+    #mas também podem ser utilizadas separadamente
 
     def move_diagonal_sup_dir(self):   
         x = self.coordenada_atual[0]
@@ -325,6 +347,7 @@ class Drone(Entregador):
             self.caminho.append(coordenada)
             self.distancia_percorrida += 1
 
+# Função para exibir o menu e interagir com o usuário
 def menu():
     while True:
         print("==== Menu ====")
@@ -341,6 +364,7 @@ def menu():
             print("0- Voltar")
             tipo_entregador = int(input("Digite uma opção: "))
 
+            # Cria o entregador correspondente com base na escolha do usuário
             if tipo_entregador == 1:
                 entregador = Entregador(nome)
                 menu_entregador(entregador, "A Pé")
@@ -364,7 +388,7 @@ def menu():
             print("Opção inválida!")            
 
         
-
+# Função para exibir o menu do entregador e interagir com o usuário
 def menu_entregador(entregador, string):
     
     while True:
@@ -381,6 +405,7 @@ def menu_entregador(entregador, string):
 
         opc_entregador = int(input("Digite uma opção: "))
 
+        # Realiza a ação correspondente com base na escolha do usuário
         if opc_entregador == 1:
             if entregador.comecou is True:
                 print("A entrega já começou, termine a atual para iniciar uma nova entrega")
@@ -391,7 +416,6 @@ def menu_entregador(entregador, string):
         elif opc_entregador == 2:
             if entregador.comecou is False:
                 print("É necessário primeiro definir o ponto de partida!")
-                
             else:
                 entregador.termina_entrega()
         elif opc_entregador == 3:
@@ -438,6 +462,8 @@ def menu_entregador(entregador, string):
 
         input("Pressione Enter para continuar...")
 
+
+# Função para exibir o menu do drone e interagir com o usuário
 def menu_drone(entregador):
     while True:
         print(f"==== Menu Drone ====")
@@ -454,6 +480,7 @@ def menu_drone(entregador):
 
         opc_entregador = int(input("Digite uma opção: "))
 
+        # Realiza a ação correspondente com base na escolha do usuário
         if opc_entregador == 1:
             if entregador.comecou is True:
                 print("A entrega já começou, termine a atual para iniciar uma nova entrega")
@@ -519,6 +546,7 @@ def menu_drone(entregador):
         input("Pressione Enter para continuar...")
 
 
+# Chamada da função principal para iniciar o programa
 menu()
     
 
